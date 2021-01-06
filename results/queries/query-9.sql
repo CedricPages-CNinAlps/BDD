@@ -1,14 +1,11 @@
-SELECT  number, SUM(order_product.quantity * products.price) AS total
-
-FROM order_product
-         INNER JOIN orders
-                    ON orders.id = order_product.order_id
-         INNER JOIN products
-                    ON products.id = order_product.product_id
-         INNER JOIN customers
-                    ON customers.id = orders.customer_id
-
-GROUP BY orders.number
-WHERE EXISTS
-(SELECT customer_id FROM orders WHERE customer_id=2);
+SELECT o.number, SUM(op.quantity*p.price) AS total_price
+FROM order_product op
+         INNER JOIN products p
+                    ON op.product_id = p.id
+         INNER JOIN orders o
+                    ON op.order_id = o.id
+         INNER JOIN customers c
+                    ON o.customer_id = c.id
+WHERE c.first_name = 'Charlize'
+GROUP BY o.number
 
